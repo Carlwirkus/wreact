@@ -42,6 +42,7 @@ export const Wreact = (function () {
     }
     if (hasChanged) cb();
     hooks[idx] = depArray;
+    idx++;
   }
 
   return {

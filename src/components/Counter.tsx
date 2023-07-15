@@ -24,6 +24,23 @@ export function Counter() {
       >
         {count2}
       </button>
+      <NestedComponent />
+    </div>
+  );
+}
+
+function NestedComponent() {
+  const [count, setCount] = Wreact.useState(0);
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          setCount(count + 1);
+        }}
+      >
+        nested component {count}
+      </button>
     </div>
   );
 }
