@@ -22,7 +22,7 @@ export const h = (tag: Tag, props: Props, ...children: Children) => {
       }
 
       if (key === "ref") {
-        // val.current = el;
+        val.current = el;
         return;
       }
 
@@ -32,7 +32,20 @@ export const h = (tag: Tag, props: Props, ...children: Children) => {
 
   // Append all children to the element
   children.forEach((child) => {
-    el.append(child);
+    if (typeof child === "string" || typeof child === "number") {
+      const textNode = document.createTextNode(child);
+      el.appendChild(textNode);
+      return;
+    }
+
+    if (Array.isArray(child)) {
+      child.forEach((c) => {
+        el.appendChild(c);
+      });
+      return;
+    }
+
+    el.appendChild(child);
   });
 
   return el;

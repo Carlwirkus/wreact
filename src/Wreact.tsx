@@ -2,11 +2,10 @@ export const Wreact = (function () {
   let _el: any = null;
   let _Component: any = null;
   let idx = 0;
+  let oldHooks: any[] | null = null;
   let hooks: any[] = [];
   function workLoop() {
     idx = 0;
-
-    console.log(hooks);
     render();
     setTimeout(workLoop, 300);
   }
@@ -16,12 +15,26 @@ export const Wreact = (function () {
     _el = el;
     _Component = Component;
 
-    const dom = Component();
-    el.childNodes.forEach((node) => {
-      el.removeChild(node);
-    });
+    //Memoize the hooks to detect changes between renders
+    let shouldRender = oldHooks
+      ? hooks.some((hook, i) => {
+          return !Object.is(hook, oldHooks?.[i]);
+        })
+      : true;
 
-    el.append(dom);
+    if (!shouldRender) {
+      return;
+    }
+
+    // nuke the existing rendered elements
+    while (el.firstChild) {
+      el.removeChild(el.firstChild);
+    }
+
+    const dom = Component();
+
+    // mount the new ones
+    el.appendChild(dom);
   }
 
   function useState<T>(initialState: T): [T, (newState: T) => void] {
@@ -51,8 +64,8 @@ export const Wreact = (function () {
     idx++;
   }
 
-  function useRef(initialValue: any = null) {
-    return useState({ current: initialValue })[0];
+  function useRef<T>(initialValue: T | null = null) {
+    return useState<{ current: T | null }>({ current: initialValue })[0];
   }
 
   return {
