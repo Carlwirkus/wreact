@@ -21,6 +21,11 @@ export const h = (tag: Tag, props: Props, ...children: Children) => {
         el.addEventListener("click", val);
       }
 
+      if (key === "ref") {
+        // val.current = el;
+        return;
+      }
+
       el.setAttribute(key, val);
     });
   }

@@ -5,6 +5,8 @@ export const Wreact = (function () {
   let hooks: any[] = [];
   function workLoop() {
     idx = 0;
+
+    console.log(hooks);
     render();
     setTimeout(workLoop, 300);
   }
@@ -23,7 +25,11 @@ export const Wreact = (function () {
   }
 
   function useState<T>(initialState: T): [T, (newState: T) => void] {
-    let state = hooks[idx] || initialState;
+    if (!hooks.hasOwnProperty(idx)) {
+      hooks[idx] = initialState;
+    }
+
+    let state = hooks[idx];
     let _idx = idx;
 
     let setState = (newVal: T) => {
@@ -45,9 +51,14 @@ export const Wreact = (function () {
     idx++;
   }
 
+  function useRef(initialValue: any = null) {
+    return useState({ current: initialValue })[0];
+  }
+
   return {
     render,
     useState,
     useEffect,
+    useRef,
   };
 })();
