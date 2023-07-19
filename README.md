@@ -17,8 +17,8 @@ then trying to implement it yourself (badly).
 
 #### Nice to haves
 
-- [ ] React Query Implementation
-- [ ] Tailwind
+- [x] React Query Implementation
+- [x] Tailwind
 - [ ] Routing
 - [ ] requestIdleCallback for rendering
 - [ ] Dom Reconciliation (instead of full dom replacement)

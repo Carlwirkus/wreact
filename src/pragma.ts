@@ -26,6 +26,14 @@ export const h = (tag: Tag, props: Props, ...children: Children) => {
         return;
       }
 
+      if (key === "style") {
+        Object.entries(val).forEach(([key, val]) => {
+          // @ts-ignore
+          el.style[key] = val;
+        });
+        return;
+      }
+
       el.setAttribute(key, val);
     });
   }
@@ -44,6 +52,8 @@ export const h = (tag: Tag, props: Props, ...children: Children) => {
       });
       return;
     }
+
+    if (child === null) return;
 
     el.appendChild(child);
   });

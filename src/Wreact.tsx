@@ -18,6 +18,8 @@ export const Wreact = (function () {
     //Memoize the hooks to detect changes between renders
     let shouldRender = oldHooks
       ? hooks.some((hook, i) => {
+          console.log(hook);
+
           return !Object.is(hook, oldHooks?.[i]);
         })
       : true;
