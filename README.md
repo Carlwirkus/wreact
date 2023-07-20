@@ -21,4 +21,4 @@ then trying to implement it yourself (badly).
 - [x] Tailwind
 - [ ] Routing
 - [ ] requestIdleCallback for rendering
-- [ ] Dom Reconciliation (instead of full dom replacement)
+- [x] Dom Reconciliation (instead of full dom replacement)

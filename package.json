@@ -16,6 +16,7 @@
   "dependencies": {
     "@tanstack/query-core": "^4.29.25",
     "@types/react": "^18.2.15",
+    "morphdom": "^2.7.0",
     "prettier": "^3.0.0"
   }
 }

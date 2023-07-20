@@ -1,3 +1,5 @@
+import morphdom from "morphdom";
+
 export const Wreact = (function () {
   let _el: any = null;
   let _Component: any = null;
@@ -28,15 +30,9 @@ export const Wreact = (function () {
       return;
     }
 
-    // nuke the existing rendered elements
-    while (el.firstChild) {
-      el.removeChild(el.firstChild);
-    }
-
     const dom = Component();
 
-    // mount the new ones
-    el.appendChild(dom);
+    morphdom(el, dom);
   }
 
   function useState<T>(initialState: T): [T, (newState: T) => void] {
