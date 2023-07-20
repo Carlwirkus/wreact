@@ -9,9 +9,11 @@ export const Wreact = (function () {
   function workLoop() {
     idx = 0;
     render();
-    setTimeout(workLoop, 300);
+    requestIdleCallback(workLoop, {
+      timeout: 25,
+    });
   }
-  setTimeout(workLoop, 300);
+  requestIdleCallback(workLoop);
 
   function render(Component: any = _Component, el: HTMLElement = _el) {
     _el = el;

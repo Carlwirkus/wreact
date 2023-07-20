@@ -15,7 +15,6 @@ export function useQuery(options: QueryOptions) {
   const hash = defaultedOptions.queryHash;
 
   Wreact.useEffect(() => {
-    console.log("query changed");
     observer.fetchOptimistic(defaultedOptions);
   }, [hash]);
 

@@ -20,5 +20,5 @@ then trying to implement it yourself (badly).
 - [x] React Query Implementation
 - [x] Tailwind
 - [ ] Routing
-- [ ] requestIdleCallback for rendering
+- [x] requestIdleCallback for rendering
 - [x] Dom Reconciliation (instead of full dom replacement)
