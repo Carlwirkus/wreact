@@ -1,6 +1,7 @@
 import { h } from "../pragma";
 import { Wreact } from "../Wreact";
 import { useQuery } from "../hooks/useQuery";
+import { ChatBot } from "./ChatBot";
 
 export function Images() {
   const [count, setCount] = Wreact.useState(1);
@@ -14,10 +15,11 @@ export function Images() {
     ],
     queryFn: async () => {
       const res = await fetch(
-        `https://picsum.photos/v2/list?page=${count}&limit=20`,
+        `https://picsum.photos/v2/list?page=${count}&limit=5`,
       );
       return res.json();
     },
+    keepPreviousData: true,
   });
 
   return (
@@ -48,7 +50,7 @@ export function Images() {
         <button
           className="bg-blue-500 text-white px-3 py-2 rounded"
           onClick={() => {
-            setCount(count - 1);
+            setCount((old) => old - 1);
           }}
         >
           {"<"}
@@ -57,37 +59,14 @@ export function Images() {
         <button
           className="bg-blue-500 text-white px-3 py-2 rounded"
           onClick={() => {
-            setCount(count + 1);
+            setCount((old) => old + 1);
           }}
         >
           {">"}
         </button>
       </div>
-    </div>
-  );
-}
 
-function NestedComponent() {
-  const [count, setCount] = Wreact.useState(0);
-  const [count2, setCount2] = Wreact.useState(0);
-
-  return (
-    <div>
-      <button
-        onClick={() => {
-          setCount(count + 1);
-        }}
-      >
-        nested component {count}
-      </button>
-
-      <button
-        onClick={() => {
-          setCount2(count2 + 1);
-        }}
-      >
-        nested component {count2}
-      </button>
+      <ChatBot />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import morphdom from "morphdom";
 
+type Dispatch<A> = ((value: A) => A) | A;
 export const Wreact = (function () {
   let _el: any = null;
   let _Component: any = null;
@@ -9,9 +10,7 @@ export const Wreact = (function () {
   function workLoop() {
     idx = 0;
     render();
-    requestIdleCallback(workLoop, {
-      timeout: 25,
-    });
+    requestIdleCallback(workLoop);
   }
   requestIdleCallback(workLoop);
 
@@ -37,7 +36,7 @@ export const Wreact = (function () {
     morphdom(el, dom);
   }
 
-  function useState<T>(initialState: T): [T, (newState: T) => void] {
+  function useState<T>(initialState: T): [T, (newState: Dispatch<T>) => void] {
     if (!hooks.hasOwnProperty(idx)) {
       hooks[idx] = initialState;
     }
@@ -45,8 +44,13 @@ export const Wreact = (function () {
     let state = hooks[idx];
     let _idx = idx;
 
-    let setState = (newVal: T) => {
-      hooks[_idx] = newVal;
+    let setState = (newVal: Dispatch<T>) => {
+      if (typeof newVal === "function") {
+        // @ts-ignore
+        hooks[_idx] = newVal(hooks[_idx]);
+      } else {
+        hooks[_idx] = newVal;
+      }
     };
 
     idx++;

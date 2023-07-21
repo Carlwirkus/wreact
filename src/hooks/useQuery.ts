@@ -1,9 +1,19 @@
-import { QueryClient, QueryObserver, QueryOptions } from "@tanstack/query-core";
+import { QueryClient, QueryObserver } from "@tanstack/query-core";
 import { Wreact } from "../Wreact";
+import { QueryObserverOptions } from "@tanstack/query-core/src/types";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
-export function useQuery(options: QueryOptions) {
+export function useQuery(options: QueryObserverOptions<any, any, any, any>) {
+  const [_, forceUpdate] = Wreact.useState<any>("idle");
+
+  // @ts-ignore
   const defaultedOptions = queryClient.defaultQueryOptions(options);
 
   const [observer] = Wreact.useState<QueryObserver>(
@@ -12,15 +22,13 @@ export function useQuery(options: QueryOptions) {
 
   const result = observer.getOptimisticResult(defaultedOptions);
 
-  const hash = defaultedOptions.queryHash;
-
-  Wreact.useEffect(() => {
-    observer.fetchOptimistic(defaultedOptions);
-  }, [hash]);
-
   Wreact.useEffect(() => {
     observer.setOptions(defaultedOptions);
   }, [options]);
+
+  observer.subscribe((props) => {
+    forceUpdate(props.status);
+  });
 
   return observer.trackResult(result);
 }
